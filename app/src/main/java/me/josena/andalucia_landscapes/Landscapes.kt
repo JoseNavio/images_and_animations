@@ -1,8 +1,8 @@
 package me.josena.andalucia_landscapes
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.bumptech.glide.Glide
@@ -65,9 +65,13 @@ class Landscapes : AppCompatActivity() {
                         if (initialX < finalX) {
                             // Swipe from left to right (previous screen)
                             binding.flipperImages.showPrevious()
+                            playSwipeSound()
+
                         } else if (initialX > finalX) {
                             // Swipe from right to left (next screen)
                             binding.flipperImages.showNext()
+                            playSwipeSound()
+
                         }
                         return true
                     }
@@ -78,7 +82,6 @@ class Landscapes : AppCompatActivity() {
     }
 
     private fun startFlipper() {
-
 
         for (landscape in landscapes) {
 
@@ -93,5 +96,14 @@ class Landscapes : AppCompatActivity() {
             binding.flipperImages.addView(ratingBinding.root)
         }
 //        binding.flipperImages.startFlipping()
+    }
+
+    private fun playSwipeSound() {
+        val mediaPlayer = MediaPlayer.create(applicationContext, R.raw.swipe_sound)
+        mediaPlayer.setOnCompletionListener { mp ->
+            mp.release() // Release the MediaPlayer resources when sound playback is complete
+        }
+
+        mediaPlayer.start()
     }
 }
